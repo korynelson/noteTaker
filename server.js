@@ -46,21 +46,29 @@ app.get("/api/notes", function(req, res) {
 app.post("/api/notes", function(req,res) {
   id = crypto.randomBytes(16).toString("hex");
   req.body.id = id;
-  console.log("adding note")
   const notes = JSON.parse(fs.readFileSync("./db/db.json"))
-  console.log(notes)
   notes.push(req.body)
-  console.log(notes)
   fs.writeFile("./db/db.json", JSON.stringify(notes), (err) => {
     if (err) throw err;
-    console.log('The file has been saved!');
+    console.log('New note has been saved!');
   });
 });
 
 // Delete notes
-app.delete("/api/notes", function(req,res) {
-  console.log("deleting note")
- 
+app.delete("/api/notes:id", function(req,res) {
+  console.log("deleting note");
+  let deleteNote = req.params.id;
+  const notes = JSON.parse(fs.readFileSync("./db/db.json"));
+  console.log(notes);
+  const newNotes = notes.filter(function(item) {
+    console.log(item.id)
+    return item.id != deleteNote;
+  })
+  console.log(newNotes);
+  fs.writeFile("./db/db.json", JSON.stringify(newNotes), (err) => {
+    if (err) throw err;
+    console.log('New note has been saved!');
+  });
 });
 
 // Starts the server to begin listening
