@@ -8,7 +8,7 @@ var crypto = require("crypto");
 // Sets up the Express App
 // =============================================================
 var app = express();
-var PORT = 8080;
+var PORT = process.env.PORT || 8080;
 
 // Serve static content for the app from the "public" directory in the application directory.
 app.use(express.static("public"));
