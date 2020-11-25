@@ -3,6 +3,7 @@
 var express = require("express");
 var fs = require("fs");
 var path = require("path");
+var crypto = require("crypto");
 
 // Sets up the Express App
 // =============================================================
@@ -39,6 +40,27 @@ app.get("/api/notes", function(req, res) {
   console.log("getting all notes...")
   const notes = JSON.parse(fs.readFileSync("./db/db.json"))
   return res.json(notes);
+});
+
+// Post new notes
+app.post("/api/notes", function(req,res) {
+  id = crypto.randomBytes(16).toString("hex");
+  req.body.id = id;
+  console.log("adding note")
+  const notes = JSON.parse(fs.readFileSync("./db/db.json"))
+  console.log(notes)
+  notes.push(req.body)
+  console.log(notes)
+  fs.writeFile("./db/db.json", JSON.stringify(notes), (err) => {
+    if (err) throw err;
+    console.log('The file has been saved!');
+  });
+});
+
+// Delete notes
+app.delete("/api/notes", function(req,res) {
+  console.log("deleting note")
+ 
 });
 
 // Starts the server to begin listening
