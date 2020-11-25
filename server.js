@@ -9,10 +9,12 @@ var path = require("path");
 var app = express();
 var PORT = 8080;
 
-// Sets up the Express app to handle data parsing
+// Serve static content for the app from the "public" directory in the application directory.
+app.use(express.static("public"));
+
+// Parse request body as JSON
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
 
 // Routes
 // =============================================================
@@ -20,11 +22,12 @@ app.use(express.json());
 // Basic route that sends the user first to the AJAX Page
 
 app.get("/notes", function(req, res) {
-  res.sendFile(path.join(__dirname + "/public", "notes.html"));
+  res.sendFile(path.join(__dirname + "/public","notes.html" ));
 });
 
 app.get("/", function(req, res) {
   res.sendFile(path.join(__dirname + "/public", "index.html"));
+
 });
 
 app.get("/index", function(req, res) {
@@ -35,24 +38,7 @@ app.get("/index", function(req, res) {
 app.get("/api/notes", function(req, res) {
   console.log("getting all notes...")
   const notes = JSON.parse(fs.readFileSync("./db/db.json"))
-  console.log(notes)
   return res.json(notes);
-});
-
-
-// Create New Characters - takes in JSON input
-app.post("/api/characters", function(req, res) {
-  // req.body hosts is equal to the JSON post sent from the user
-  // This works because of our body parsing middleware
-  var newcharacter = req.body;
-
-  console.log(newcharacter);
-
-  // We then add the json the user sent to the character array
-  characters.push(newcharacter);
-
-  // We then display the JSON to the users
-  res.json(newcharacter);
 });
 
 // Starts the server to begin listening

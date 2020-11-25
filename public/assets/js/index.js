@@ -9,6 +9,7 @@ let activeNote = {};
 
 // A function for getting all notes from the db
 const getNotes = () => {
+  console.log("getting notes")
   return $.ajax({
     url: "/api/notes",
     method: "GET",
@@ -27,7 +28,7 @@ const saveNote = (note) => {
 // A function for deleting a note from the db
 const deleteNote = (id) => {
   return $.ajax({
-    url: "api/notes/" + id,
+    url: "/api/notes" + id,
     method: "DELETE",
   });
 };
@@ -137,6 +138,7 @@ const renderNoteList = (notes) => {
 
 // Gets notes from the db and renders them to the sidebar
 const getAndRenderNotes = () => {
+  console.log("Starting to render")
   return getNotes().then(renderNoteList);
 };
 
