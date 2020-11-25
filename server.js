@@ -1,40 +1,54 @@
-// Require dependencies
-var http = require("http");
+// Dependencies
+// =============================================================
+var express = require("express");
 var fs = require("fs");
+var path = require("path");
 
-// Set our port to 8080
+// Sets up the Express App
+// =============================================================
+var app = express();
 var PORT = 8080;
 
-var server = http.createServer(handleRequest);
+// Sets up the Express app to handle data parsing
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-function handleRequest(req, res) {
 
-  // Capture the url the request is made to
-  var path = req.url;
+// Routes
+// =============================================================
 
-  // When we visit different urls, call the function with different arguments
-  switch (path) {
+// Basic route that sends the user first to the AJAX Page
+app.get("/", function(req, res) {
+  res.sendFile(path.join(__dirname + "/public", "index.html"));
+});
 
-  case "/notes":
-    return renderHTML(path + ".html", res);
-  case "/":
-    return renderHTML("index.html", res);
+app.get("/notes", function(req, res) {
+  res.sendFile(path.join(__dirname + "/public", "notes.html"));
+});
 
-  default:
-    return renderHTML("index.html", res);
-  }
-}
+// Displays all characters
+app.get("/api/characters", function(req, res) {
+  return res.json(characters);
+});
 
-// function to take a filepath and respond with html
-function renderHTML(filePath, res) {
-  return fs.readFile(__dirname +"/public/" + filePath, function(err, data) {
-    if (err) throw err;
-    res.writeHead(200, { "Content-Type": "text/html" });
-    res.end(data);
-  });
-}
 
-// Starts our server.
-server.listen(PORT, function() {
-  console.log("Server is listening on PORT: " + PORT);
+// Create New Characters - takes in JSON input
+app.post("/api/characters", function(req, res) {
+  // req.body hosts is equal to the JSON post sent from the user
+  // This works because of our body parsing middleware
+  var newcharacter = req.body;
+
+  console.log(newcharacter);
+
+  // We then add the json the user sent to the character array
+  characters.push(newcharacter);
+
+  // We then display the JSON to the users
+  res.json(newcharacter);
+});
+
+// Starts the server to begin listening
+// =============================================================
+app.listen(PORT, function() {
+  console.log("App listening on PORT " + PORT);
 });
