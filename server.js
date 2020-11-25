@@ -18,17 +18,25 @@ app.use(express.json());
 // =============================================================
 
 // Basic route that sends the user first to the AJAX Page
-app.get("/", function(req, res) {
-  res.sendFile(path.join(__dirname + "/public", "index.html"));
-});
 
 app.get("/notes", function(req, res) {
   res.sendFile(path.join(__dirname + "/public", "notes.html"));
 });
 
-// Displays all characters
-app.get("/api/characters", function(req, res) {
-  return res.json(characters);
+app.get("/", function(req, res) {
+  res.sendFile(path.join(__dirname + "/public", "index.html"));
+});
+
+app.get("/index", function(req, res) {
+  res.sendFile(path.join(__dirname + "/public", "index.html"));
+});
+
+// Displays all notes
+app.get("/api/notes", function(req, res) {
+  console.log("getting all notes...")
+  const notes = JSON.parse(fs.readFileSync("./db/db.json"))
+  console.log(notes)
+  return res.json(notes);
 });
 
 
