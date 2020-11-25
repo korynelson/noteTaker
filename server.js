@@ -60,7 +60,6 @@ app.delete("/api/notes:id", function(req,res) {
   const newNotes = notes.filter(function(item) {
     return item.id != deleteNote;
   })
-  console.log(newNotes);
   fs.writeFile("./db/db.json", JSON.stringify(newNotes), (err) => {
     if (err) throw err;
   });
