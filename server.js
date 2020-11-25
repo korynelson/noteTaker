@@ -37,7 +37,6 @@ app.get("/index", function(req, res) {
 
 // Displays all notes
 app.get("/api/notes", function(req, res) {
-  console.log("getting all notes...")
   const notes = JSON.parse(fs.readFileSync("./db/db.json"))
   return res.json(notes);
 });
@@ -50,25 +49,22 @@ app.post("/api/notes", function(req,res) {
   notes.push(req.body)
   fs.writeFile("./db/db.json", JSON.stringify(notes), (err) => {
     if (err) throw err;
-    console.log('New note has been saved!');
   });
+  return res.json(notes);
 });
 
 // Delete notes
 app.delete("/api/notes:id", function(req,res) {
-  console.log("deleting note");
   let deleteNote = req.params.id;
   const notes = JSON.parse(fs.readFileSync("./db/db.json"));
-  console.log(notes);
   const newNotes = notes.filter(function(item) {
-    console.log(item.id)
     return item.id != deleteNote;
   })
   console.log(newNotes);
   fs.writeFile("./db/db.json", JSON.stringify(newNotes), (err) => {
     if (err) throw err;
-    console.log('New note has been saved!');
   });
+  return res.json(newNotes);
 });
 
 // Starts the server to begin listening
