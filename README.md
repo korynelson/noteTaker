@@ -10,7 +10,6 @@ This is a note taking app that users can store important notes on.  It enables s
 ## Table of Contents
 * [Installation](#installation)
 * [Usage](#usage)
-* [Credits](#credits)
 * [License](#license)
 * [Contributing](#Contributing)
 * [Tests](#Tests)
