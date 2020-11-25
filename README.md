@@ -1,5 +1,5 @@
 
-# Employee Summary Generator
+# Note Taking Application
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ![noteapp](./assets/images/appphoto.PNG)
